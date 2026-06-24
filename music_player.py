@@ -6,6 +6,8 @@ class MusicPlayer():
         self.is_song_playing = False
         self.is_song_paused = False
         self.previous_volume = 0
+        self.current_song = None
+        self.is_muted = False
     def show_current_volume(self):
         if not self.music_player_is_turned_on:
             return f"{self.music_player_name} is turned off..Turn it on to see volume"
@@ -22,7 +24,7 @@ class MusicPlayer():
         self.music_player_is_turned_on = False
         self.is_song_playing = False
         self.is_song_paused = False
-        return f"{self.music_player_name} turned of.."
+        return f"{self.music_player_name} turned off.."
     def play_song(self,song_name):
         if not self.music_player_is_turned_on:
             return f"{self.music_player_name} is turned off..Please turn on first to play a song"
@@ -36,10 +38,19 @@ class MusicPlayer():
             return f"{self.music_player_name} is turned off..Please turn on and play a song first to pause a song"
         elif not self.is_song_playing:
             return f"Please play a song first to pause a song"
+        elif self.is_song_paused:
+            return f"{self.current_song} is already paused"
         else:
             self.is_song_playing = False 
             self.is_song_paused = True
             return f"Song paused"
+    def resume_song(self):
+        if not self.music_player_is_turned_on:
+            return f"{self.music_player_name} is turned off..Please turn on and pause a son first to resume a song"
+        if self.current_song == None:
+            return "No song has been played"
+        self.play_song(self.current_song)
+        return f"{self.current_song} is resumed"
     def increase_volume(self,volume_to_be_increased_by):
         if not self.music_player_is_turned_on:
             return f"{self.music_player_name} is turned off..Please turn it on to increase the volume."
@@ -63,19 +74,23 @@ class MusicPlayer():
     def skip_to_next_song(self,song_name):
         if not self.music_player_is_turned_on:
             return f"{self.music_player_name} is currently turned off..Turn it on first to use this feature"
-        self.is_song_playing = False
-        self.current_song = song_name
-        self.is_song_playing = True
         return self.play_song(song_name)
     def mute(self):
         if not self.music_player_is_turned_on:
             return f"{self.music_player_name} is currently turned off..Turn it on first to use this feature"
-        self.previous_volume = self.current_volume
-        self.current_volume = 0
-        return f"Muted"
+        if self.current_volume != 0:
+            self.is_muted = True
+            self.previous_volume = self.current_volume
+            self.current_volume = 0
+            return f"Muted"
+        else:
+            return f"{self.music_player_name} is already muted"
     def unmute(self):
         if not self.music_player_is_turned_on:
             return f"{self.music_player_name} is currently turned off..Turn it on first to use this feature"
+        if not self.is_muted:
+            return f"Not Muted..Current Volume : {self.current_volume}"
+        self.is_muted = False
         self.current_volume = self.previous_volume
         return f"Unmuted"
     def display_current_status(self):
@@ -105,6 +120,7 @@ if __name__ == "__main__":
     print(Spotify.pause_song())
     print(Spotify.turn_on())
     print(Spotify.pause_song())
+    print(Spotify.resume_song())
     print(Spotify.play_song("I think they call this love"))
     print(Spotify.increase_volume(20))
     print(Spotify.decrease_volume(120))
@@ -115,17 +131,10 @@ if __name__ == "__main__":
     print(Spotify.pause_song())
     print(Spotify.current_volume)
     print(Spotify.mute())
+    print(Spotify.mute())
     print(Spotify.current_volume)
     print(Spotify.unmute())
     print(Spotify.current_volume)
     Spotify.display_current_status()
     print(Spotify.turn_off())
     print(Spotify.turn_off())
-    Youtube_music = MusicPlayer("Youtube Music")
-    print(Youtube_music.turn_on())
-    print(Youtube_music.turn_on())
-    print(Youtube_music.play_song("Nimbuda"))
-    print(Youtube_music.skip_to_next_song("Jab Tak"))
-    Youtube_music.display_current_status()
-    print(Youtube_music.turn_off())
-    Youtube_music.display_current_status()
