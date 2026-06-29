@@ -22,6 +22,7 @@ class MediaPlayer:
     def turn_off(self):
         if not self.media_player_is_turned_on:
             return f"{self.media_player_name} is already turned off"
+        self.is_content_playing = False
         self.media_player_is_turned_on = False
         return f"{self.media_player_name} turned off.."
     def play_content(self,content_name):

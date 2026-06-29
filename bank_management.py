@@ -1,52 +1,57 @@
 class Customer:
-    def __init__(self,customer_id,name,email,phone,address):
+    def __init__(self, customer_id, name, email, phone, address):
         self.customer_id = customer_id
         self.name = name
         self.email = email
         self.phone = phone
         self.address = address
     def update_details(self):
-        print("Choose corresponding number to update the detail: ")
-        print("1 . Customer id")
-        print("2 . Name")
-        print("3 . Email")
-        print("4 . Phone")
-        print("5 . Address")
-        print("6 . Exit")
-        update_details_number = 0
         while True:
-            update_details_number = int(input("Enter a number: "))
-            if update_details_number == 1:
-                self.customer_id = input("Enter your new Customer id: ")
-                print(f"Your Customer id updated to {self.customer_id}")
-                break
-            elif update_details_number == 2:
-                self.name = input("Enter Your new Name: ")
-                print(f"Your Name updated to {self.name}")
-                break
-            elif update_details_number == 3:
-                self.email = input("Enter Your new Email: ")
-                print(f"Your Email updated to {self.email}")
-                break
-            elif update_details_number == 4:
-                self.phone = input("Enter Your new Phone number: ")
-                print(f"Your Phone number updated to {self.phone}")
-                break
-            elif update_details_number == 5:
-                self.address = input("Enter your new Address: ")
-                print(f"Your Address updated to {self.address}")
-                break
-            elif update_details_number == 6:
+            print("\nUpdate Customer Details")
+            print("1. Name")
+            print("2. Email")
+            print("3. Phone")
+            print("4. Address")
+            print("5. Exit")
+            try:
+                choice = int(input("Enter your choice: "))
+            except ValueError:
+                print("Please enter a valid number.")
+                continue
+            if choice == 1:
+                self.name = input("Enter new name: ")
+                print("Name updated successfully.")
+            elif choice == 2:
+                email = input("Enter new email: ")
+
+                if "@" in email and "." in email:
+                    self.email = email
+                    print("Email updated successfully.")
+                else:
+                    print("Invalid email address.")
+            elif choice == 3:
+                phone = input("Enter new phone number: ")
+                if phone.isdigit() and len(phone) == 10:
+                    self.phone = phone
+                    print("Phone number updated successfully.")
+                else:
+                    print("Invalid phone number.")
+            elif choice == 4:
+                self.address = input("Enter new address: ")
+                print("Address updated successfully.")
+            elif choice == 5:
                 break
             else:
-                print("Enter a valid number")
+                print("Invalid choice. Please try again.")
     def display_details(self):
-        print("Customer")
-        print("--------------------")
-        print(f"ID : {self.customer_id}")
-        print(f"Name : {self.name}")
-        print(f"Email : {self.email}")
-        print(f"Phone : {self.phone}")
-c1 = Customer(101,"messi","ajfn",9583920488,"wfnjefenf")
-c1.update_details()
-c1.display_details()
+        print("\nCustomer Details")
+        print("----------------------------")
+        print(f"Customer ID : {self.customer_id}")
+        print(f"Name        : {self.name}")
+        print(f"Email       : {self.email}")
+        print(f"Phone       : {self.phone}")
+        print(f"Address     : {self.address}")
+customer1 = Customer(101,"Lionel Messi","messi@gmail.com","9876543210","Rosario, Argentina")
+customer1.display_details()
+customer1.update_details()
+customer1.display_details()
