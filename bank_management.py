@@ -1,3 +1,4 @@
+from datetime import datetime
 class Customer:
     def __init__(self, customer_id, name, email, phone, address):
         self.customer_id = customer_id
@@ -117,22 +118,53 @@ class SavingsAccount(Account):
         super().show_details()
         print(f"Interest Rate  : {self.interest_rate}%")
         print(f"Minimum Balance: Rs.{self.minimum_balance}")
-customer1 = Customer(
-    101,
-    "Lionel Messi",
-    "messi@gmail.com",
-    "9876543210",
-    "Rosario, Argentina"
-)
-saving_account = SavingsAccount(
-    10001,
-    customer1,
-    50000,
-    1234,
-    4.5,
-    1000
-)
-saving_account.show_details()
-saving_account.calculate_interest()
-saving_account.withdraw()
-saving_account.check_balance()
+class CurrentAccount(Account):
+    def __init__(self, account_number, customer, balance, pin, overdraft_limit):
+        super().__init__(account_number, customer, balance, pin)
+        self.overdraft_limit = overdraft_limit
+    def withdraw(self):
+        amount = float(input("Enter amount to withdraw: "))
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+        elif amount > self.balance + self.overdraft_limit:
+            print("Withdrawal denied.")
+            print("Overdraft limit exceeded.")
+        else:
+            self.balance -= amount
+            print(f"Rs.{amount} withdrawn successfully.")
+            print(f"Current Balance: Rs.{self.balance}")
+    def transfer(self, receiver_account):
+        amount = float(input("Enter amount to transfer: "))
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+        elif amount > self.balance + self.overdraft_limit:
+            print("Transfer failed.")
+            print("Overdraft limit exceeded.")
+        else:
+            self.balance -= amount
+            receiver_account.balance += amount
+            print("Money transferred successfully.")
+            print(f"Current Balance: Rs.{self.balance}")
+    def show_details(self):
+        super().show_details()
+        print(f"Overdraft Limit : Rs.{self.overdraft_limit}")
+class Transaction:
+    transaction_count = 1000
+    def __init__(self, transaction_type, amount, sender_account, receiver_account=None):
+        Transaction.transaction_count += 1
+        self.transaction_id = Transaction.transaction_count
+        self.transaction_type = transaction_type
+        self.amount = amount
+        self.sender_account = sender_account
+        self.receiver_account = receiver_account
+        self.date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    def display_transaction(self):
+        print("\nTransaction Details")
+        print("----------------------------")
+        print(f"Transaction ID : {self.transaction_id}")
+        print(f"Type           : {self.transaction_type}")
+        print(f"Amount         : Rs.{self.amount}")
+        print(f"Date           : {self.date}")
+        print(f"Sender Account : {self.sender_account}")
+        if self.receiver_account is not None:
+            print(f"Receiver Account : {self.receiver_account}")
