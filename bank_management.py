@@ -94,3 +94,45 @@ class Account:
         print(f"Account Number : {self.account_number}")
         print(f"Customer Name  : {self.customer.name}")
         print(f"Balance        : Rs.{self.balance}")
+class SavingsAccount(Account):
+    def __init__(self, account_number, customer, balance, pin, interest_rate, minimum_balance):
+        super().__init__(account_number, customer, balance, pin)
+        self.interest_rate = interest_rate
+        self.minimum_balance = minimum_balance
+    def calculate_interest(self):
+        interest = (self.balance * self.interest_rate) / 100
+        print(f"Interest Earned: Rs.{interest}")
+    def withdraw(self):
+        amount = float(input("Enter amount to withdraw: "))
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+        elif self.balance - amount < self.minimum_balance:
+            print("Withdrawal denied.")
+            print(f"You must maintain a minimum balance of Rs.{self.minimum_balance}")
+        else:
+            self.balance -= amount
+            print(f"Rs.{amount} withdrawn successfully.")
+            print(f"Current Balance: Rs.{self.balance}")
+    def show_details(self):
+        super().show_details()
+        print(f"Interest Rate  : {self.interest_rate}%")
+        print(f"Minimum Balance: Rs.{self.minimum_balance}")
+customer1 = Customer(
+    101,
+    "Lionel Messi",
+    "messi@gmail.com",
+    "9876543210",
+    "Rosario, Argentina"
+)
+saving_account = SavingsAccount(
+    10001,
+    customer1,
+    50000,
+    1234,
+    4.5,
+    1000
+)
+saving_account.show_details()
+saving_account.calculate_interest()
+saving_account.withdraw()
+saving_account.check_balance()
