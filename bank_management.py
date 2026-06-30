@@ -51,7 +51,46 @@ class Customer:
         print(f"Email       : {self.email}")
         print(f"Phone       : {self.phone}")
         print(f"Address     : {self.address}")
-customer1 = Customer(101,"Lionel Messi","messi@gmail.com","9876543210","Rosario, Argentina")
-customer1.display_details()
-customer1.update_details()
-customer1.display_details()
+class Account:
+    def __init__(self, account_number, customer, balance, pin):
+        self.account_number = account_number
+        self.customer = customer      
+        self.balance = balance
+        self.pin = pin
+    def deposit(self):
+        amount = float(input("Enter amount to deposit: "))
+        if amount > 0:
+            self.balance += amount
+            print(f"Rs.{amount} deposited successfully.")
+            print(f"Current Balance: Rs.{self.balance}")
+        else:
+            print("Amount must be greater than 0.")
+    def withdraw(self):
+        amount = float(input("Enter amount to withdraw: "))
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+        elif amount > self.balance:
+            print("Insufficient balance.")
+        else:
+            self.balance -= amount
+            print(f"Rs.{amount} withdrawn successfully.")
+            print(f"Current Balance: Rs.{self.balance}")
+    def check_balance(self):
+        print(f"Current Balance: Rs.{self.balance}")
+    def transfer(self, receiver_account):
+        amount = float(input("Enter amount to transfer: "))
+        if amount <= 0:
+            print("Amount must be greater than 0.")
+        elif amount > self.balance:
+            print("Insufficient balance.")
+        else:
+            self.balance -= amount
+            receiver_account.balance += amount
+            print("Money transferred successfully.")
+            print(f"Your Balance: Rs.{self.balance}")
+    def show_details(self):
+        print("\nAccount Details")
+        print("----------------------------")
+        print(f"Account Number : {self.account_number}")
+        print(f"Customer Name  : {self.customer.name}")
+        print(f"Balance        : Rs.{self.balance}")
