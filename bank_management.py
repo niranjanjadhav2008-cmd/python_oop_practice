@@ -252,3 +252,13 @@ class Bank:
             return
         self.accounts.remove(account)
         print("Account deleted successfully.")
+SBI = Bank()
+c1 = Customer(101,"Niranjan","niranjanjadhav2008@gmail.com",9579522427,"balaji-complex,D-102,Mumbai-Goa Highway,Mangaon-Raigad")
+c2 = Customer(102,"Pritha","pritha@gmail.com",7382022731,"Lonere")
+niranjan = Account(121,c1,20000,2008)
+pritha = Account(122,c2,40000,2008)
+SBI.create_account(niranjan)
+print(SBI.find_account(121))
+SBI.deposit_money(121)
+SBI.withdraw_money(121)
+SBI.transfer_money(121,122)
