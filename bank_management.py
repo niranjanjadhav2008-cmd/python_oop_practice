@@ -168,3 +168,87 @@ class Transaction:
         print(f"Sender Account : {self.sender_account}")
         if self.receiver_account is not None:
             print(f"Receiver Account : {self.receiver_account}")
+class Bank:
+    def __init__(self):
+        self.accounts = []
+        self.transactions = []
+    def create_account(self, account):
+        self.accounts.append(account)
+        print("Account created successfully.")
+    def find_account(self, account_number):
+        for account in self.accounts:
+            if account.account_number == account_number:
+                return account
+        return None
+    def deposit_money(self, account_number):
+        account = self.find_account(account_number)
+        if account is None:
+            print("Account not found.")
+            return
+        amount = float(input("Enter amount to deposit: "))
+        if amount <= 0:
+            print("Invalid amount.")
+            return
+        account.balance += amount
+        transaction = Transaction("Deposit", amount, account.account_number)
+        self.transactions.append(transaction)
+        print("Amount deposited successfully.")
+    def withdraw_money(self, account_number):
+        account = self.find_account(account_number)
+        if account is None:
+            print("Account not found.")
+            return
+        old_balance = account.balance
+        account.withdraw()
+        if account.balance != old_balance:
+            amount = old_balance - account.balance
+            transaction = Transaction("Withdraw", amount, account.account_number)
+            self.transactions.append(transaction)
+    def transfer_money(self, sender_number, receiver_number):
+        sender = self.find_account(sender_number)
+        receiver = self.find_account(receiver_number)
+        if sender is None:
+            print("Sender account not found.")
+            return
+        if receiver is None:
+            print("Receiver account not found.")
+            return
+        old_balance = sender.balance
+        sender.transfer(receiver)
+        if sender.balance != old_balance:
+            amount = old_balance - sender.balance
+            transaction = Transaction("Transfer", amount, sender.account_number, receiver.account_number)
+            self.transactions.append(transaction)
+    def check_balance(self, account_number):
+        account = self.find_account(account_number)
+        if account is None:
+            print("Account not found.")
+            return
+        account.check_balance()
+    def display_account(self, account_number):
+        account = self.find_account(account_number)
+        if account is None:
+            print("Account not found.")
+            return
+        account.show_details()
+    def display_all_accounts(self):
+        if len(self.accounts) == 0:
+            print("No accounts available.")
+            return
+        for account in self.accounts:
+            account.show_details()
+            print("----------------------------")
+    def display_transaction_history(self):
+        if len(self.transactions) == 0:
+            print("No transactions found.")
+            return
+        for transaction in self.transactions:
+            transaction.display_transaction()
+            print("----------------------------")
+    def delete_account(self, account_number):
+        account = self.find_account(account_number)
+        if account is None:
+            print("Account not found.")
+            return
+        self.accounts.remove(account)
+        print("Account deleted successfully.")
