@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 class Customer:
     def __init__(self, customer_id, name, email, phone, address):
         self.customer_id = customer_id
@@ -252,6 +253,65 @@ class Bank:
             return
         self.accounts.remove(account)
         print("Account deleted successfully.")
+
+class Database:
+    def save_accounts(self, accounts):
+        data = []
+        for account in accounts:
+            account_data = {
+                "account_number": account.account_number,
+                "customer_id": account.customer.customer_id,
+                "name": account.customer.name,
+                "email": account.customer.email,
+                "phone": account.customer.phone,
+                "address": account.customer.address,
+                "balance": account.balance,
+                "pin": account.pin,
+                "account_type": account.__class__.__name__
+            }
+            if isinstance(account, SavingsAccount):
+                account_data["interest_rate"] = account.interest_rate
+                account_data["minimum_balance"] = account.minimum_balance
+            elif isinstance(account, CurrentAccount):
+                account_data["overdraft_limit"] = account.overdraft_limit
+            data.append(account_data)
+        with open("accounts.json", "w") as file:
+            json.dump(data, file, indent=4)
+        print("Accounts saved successfully.")
+    def load_accounts(self):
+        accounts = []
+        try:
+            with open("accounts.json", "r") as file:
+                data = json.load(file)
+            for item in data:
+                customer = Customer(
+                    item["customer_id"],
+                    item["name"],
+                    item["email"],
+                    item["phone"],
+                    item["address"]
+                )
+                if item["account_type"] == "SavingsAccount":
+                    account = SavingsAccount(
+                        item["account_number"],
+                        customer,
+                        item["balance"],
+                        item["pin"],
+                        item["interest_rate"],
+                        item["minimum_balance"]
+                    )
+                else:
+                    account = CurrentAccount(
+                        item["account_number"],
+                        customer,
+                        item["balance"],
+                        item["pin"],
+                        item["overdraft_limit"]
+                    )
+                accounts.append(account)
+        except FileNotFoundError:
+            print("No account data found.")
+        return accounts
 SBI=Bank()
 Niranjan=Customer(101,"Niranjan Jadhav","niranjan@gmail.com","9876543210","Pune")
 Messi=Customer(102,"Lionel Messi","messi@gmail.com","9876543211","Argentina")
