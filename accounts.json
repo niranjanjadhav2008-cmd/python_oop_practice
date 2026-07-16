@@ -1,0 +1,15 @@
+[
+    {
+        "account_number": 121,
+        "customer_id": 101,
+        "name": "Niranjan Jadhav",
+        "email": "niranjan@gmail.com",
+        "phone": "9876543210",
+        "address": "Pune",
+        "balance": 19900.0,
+        "pin": 2008,
+        "account_type": "SavingsAccount",
+        "interest_rate": 4,
+        "minimum_balance": 1000
+    }
+]
